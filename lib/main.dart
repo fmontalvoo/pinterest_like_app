@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:pinterest_like_app/src/pages/pinterest_page.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -13,7 +15,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Container(),
+      home: PinterestPage(),
     );
   }
 }
