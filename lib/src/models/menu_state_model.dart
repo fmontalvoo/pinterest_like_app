@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-class MenuItemModel with ChangeNotifier {
+class MenuStateModel with ChangeNotifier {
   int _currentIndex = 0;
+  bool _showMenu = true;
 
   set setCurrentIndex(int index) {
     this._currentIndex = index;
@@ -9,4 +10,11 @@ class MenuItemModel with ChangeNotifier {
   }
 
   int get getCurrentIndex => this._currentIndex;
+
+  set setShowMenu(bool show) {
+    this._showMenu = show;
+    notifyListeners();
+  }
+
+  bool get getShowMenu => this._showMenu;
 }

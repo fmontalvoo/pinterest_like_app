@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:pinterest_like_app/src/models/menu_item_model.dart';
 
 import 'package:pinterest_like_app/src/widgets/pinterest_menu_item.dart';
-import 'package:provider/provider.dart';
 
 class PinterestMenu extends StatefulWidget {
+  final bool showMenu;
+  final Color backgroundColor;
   final List<PinterestMenuItem> items;
 
-  const PinterestMenu({Key key, @required this.items}) : super(key: key);
+  const PinterestMenu(
+      {Key key,
+      this.showMenu = true,
+      this.backgroundColor = Colors.white,
+      @required this.items})
+      : super(key: key);
   @override
   _PinterestMenuState createState() => _PinterestMenuState();
 }
@@ -24,40 +29,42 @@ class _PinterestMenuState extends State<PinterestMenu> {
     );
   }
 
-  Container _buildContainer(Size size) {
-    return Container(
-      width: size.width * .5,
-      height: 70.0,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(100.0),
-          ),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: Colors.black45, blurRadius: 10.0, spreadRadius: -2.5)
-          ]),
-      child: _buildItems(),
-    );
+  Widget _buildContainer(Size size) {
+    return AnimatedOpacity(
+        duration: Duration(milliseconds: 500),
+        opacity: (widget.showMenu) ? 1 : 0,
+        child: Container(
+          width: size.width * .5,
+          height: 70.0,
+          decoration: BoxDecoration(
+              color: widget.backgroundColor,
+              borderRadius: BorderRadius.all(
+                Radius.circular(100.0),
+              ),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: Colors.black45, blurRadius: 10.0, spreadRadius: -2.5)
+              ]),
+          child: _items(),
+        ));
   }
 
-  Widget _buildItems() {
-    return ChangeNotifierProvider(
-      create: (_) => MenuItemModel(),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: List.generate(
-            widget.items.length,
-            (index) => Expanded(
-                  child: PinterestMenuItem.build(
-                    index: index,
-                    icon: widget.items[index].icon,
-                    title: widget.items[index].title,
-                    onPressed: widget.items[index].onPressed,
-                  ),
-                )),
-      ),
+  Widget _items() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: List.generate(
+          widget.items.length,
+          (index) => Expanded(
+                child: PinterestMenuItem.build(
+                  index: index,
+                  icon: widget.items[index].icon,
+                  selectedColor: widget.items[index].selectedColor,
+                  unSelectedColor: widget.items[index].unSelectedColor,
+                  title: widget.items[index].title,
+                  onPressed: widget.items[index].onPressed,
+                ),
+              )),
     );
   }
 }

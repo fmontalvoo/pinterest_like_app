@@ -2,20 +2,30 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:pinterest_like_app/src/models/menu_item_model.dart';
+import 'package:pinterest_like_app/src/models/menu_state_model.dart';
 
 // ignore: must_be_immutable
 class PinterestMenuItem extends StatelessWidget {
   int index = 0;
   final Widget icon;
   final Widget title;
+  final Color selectedColor;
+  final Color unSelectedColor;
   final void Function() onPressed;
 
-  PinterestMenuItem.build({this.index, this.icon, this.title, this.onPressed});
+  PinterestMenuItem.build(
+      {this.index,
+      this.icon,
+      this.selectedColor,
+      this.unSelectedColor,
+      this.title,
+      this.onPressed});
 
   PinterestMenuItem({
     Key key,
     @required this.icon,
+    this.selectedColor = Colors.blue,
+    this.unSelectedColor = Colors.grey,
     this.title,
     @required this.onPressed,
   }) : super(key: key);
@@ -23,15 +33,15 @@ class PinterestMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     IconThemeData defaultIconTheme = IconThemeData(
-      color: Colors.black,
+      color: this.unSelectedColor,
       size: 30.0,
     );
     IconThemeData selectedIconTheme = IconThemeData(
-      color: Colors.blue,
+      color: this.selectedColor,
       size: 45.0,
     );
 
-    final selectedIndex = Provider.of<MenuItemModel>(context).getCurrentIndex;
+    final selectedIndex = Provider.of<MenuStateModel>(context).getCurrentIndex;
     return FlatButton(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0)),
       child: Column(
@@ -47,7 +57,7 @@ class PinterestMenuItem extends StatelessWidget {
         ],
       ),
       onPressed: () {
-        Provider.of<MenuItemModel>(context, listen: false).setCurrentIndex =
+        Provider.of<MenuStateModel>(context, listen: false).setCurrentIndex =
             index;
         onPressed();
       },
